@@ -14,6 +14,7 @@ from __future__ import annotations
 import logging
 import os
 import uuid
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -188,10 +189,20 @@ def run_analysis(req: AnalyzeRequest) -> AnalyzeResponse:
         except fg.FortyGuardUnavailable as exc:
             trace.add(f"No live FortyGuard API access ({exc}); entire analysis will run in Demo Mode.")
 
-    results = [
-        _analyze_one_location(loc, req, client_available, client, trace)
-        for loc in req.locations
-    ]
+    # Run each location's full pipeline concurrently rather than one at a
+    # time. Each location makes several live FortyGuard calls that each
+    # poll until the async job completes — sequentially, N locations can
+    # take N times as long, which risks tripping a hosting platform's
+    # request timeout. Threads (not processes) are fine here since the
+    # work is I/O-bound (waiting on network calls), not CPU-bound.
+    with ThreadPoolExecutor(max_workers=max(1, len(req.locations))) as pool:
+        futures = [
+            pool.submit(_analyze_one_location, loc, req, client_available, client, trace)
+            for loc in req.locations
+        ]
+        # Preserve the original request order in the results, regardless of
+        # which location's thread happens to finish first.
+        results = [f.result() for f in futures]
 
     results_sorted = sorted(results, key=lambda r: r.risk_score)
     preferred = results_sorted[0]
