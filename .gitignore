@@ -1,0 +1,26 @@
+# Secrets
+backend/.env
+.env
+
+# Python
+backend/venv/
+backend/.venv/
+venv/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+backend/heatwise.db
+backend/outputs/
+
+# Node
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# OS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/

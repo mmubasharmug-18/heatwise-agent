@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #232931 transparent;
+}
+
+body {
+  background-color: #0A0D10;
+  background-image:
+    radial-gradient(circle at 15% 0%, rgba(61, 169, 252, 0.06), transparent 40%),
+    radial-gradient(circle at 85% 20%, rgba(255, 138, 61, 0.05), transparent 45%);
+}
+
+/* Tile grid motif — echoes FortyGuard's own tile-based heatmap data model.
+   Used sparingly as ambient texture, never as decoration for its own sake. */
+.tile-field {
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.035) 1px, transparent 1px);
+  background-size: 28px 28px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 40%, transparent 85%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 40%, transparent 85%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid #3DA9FC;
+  outline-offset: 2px;
+}
