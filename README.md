@@ -183,3 +183,13 @@ HeatWise Agent is an **operational decision-support prototype**. The
 index. This tool does not replace official weather alerts, occupational
 safety regulations (e.g. OSHA heat rules), or medical advice — always defer
 to official guidance and your organization's safety policies.
+
+## Third-party code disclosure
+
+`backend/fortyguard/` (`client.py`, `exceptions.py`, `__init__.py`) is
+copied **verbatim, unmodified**, from FortyGuard's own official
+`temperature-api-quickstart` repository
+(https://github.com/FortyGuard-Tech/temperature-api-quickstart) — it is
+FortyGuard's own API client, not code authored for this hackathon. Every
+other file in this repository (agent logic, risk scoring, FastAPI backend,
+React frontend, tests, docs) was written for this submission.
